@@ -2,21 +2,26 @@ mod args;
 mod prompts;
 mod render;
 mod utils;
-mod eslint;
+mod banner;
+mod editor_config;
+mod create_eslint_config;
+mod render_eslint;
 
-use std::{env, fs};
-use eslint;
+
 use args::Args;
 use clap::Parser;
 use serde_json::json;
+use std::{env, fs};
 
 use crate::{
   prompts::{E2eTesting, Prompts},
   render::render_template,
-  utils::{empty_dir, get_path_from_cwd, mkdir},
+  utils::{empty_dir, get_path_from_cwd, mkdir}, banner::print_banner,
 };
 
 fn main() {
+  print_banner();
+
   let args = Args::parse();
 
   let prompts = Prompts::new(&args);
@@ -95,7 +100,6 @@ fn main() {
   if needs_play_wright {
     render(vec!["config", "playwright"], &project_name);
   }
-
 
   // render typescript configs
   if needs_type_script {
